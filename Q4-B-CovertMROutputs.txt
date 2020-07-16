@@ -1,0 +1,40 @@
+##CONVERTING RESULTS OF MAP/REDUCE PHASES SO OUTPUT CAN BE USED AS INPUT FOR NEXT MAP/REDUCE PHASE
+
+##MAPPER ONE OUTPUT IS STORED IN /output1
+##COPY THIS OUTPUT FILE TO MASTER
+hadoop fs -get /output1 /home/maureen_maguire47
+
+##COVERT MAPPER 1 OUTPUT TO CSV SO IT CAN BE USED AS INPUT FOR MAPPER2
+hadoop fs -cat /output1/part* > mapOneOutput.csv
+
+##CONFIRM FILE LOOKS OK
+head -5 mapOneOutput.csv
+
+##UPLOAD NEW CSV FILE TO HDFS SO WE CAN RUN MAP REDUCE 2 ON IT
+hadoop fs -put mapOneOutput.csv /
+
+##CONFIRM YOUR FILE HAS BEEN UPLOADED TO HDFS
+hadoop fs -ls /
+
+##RETURN TO MAP REDUCE PHASE 2 WHICH IS IN THE SOURCE CODE FILE Q4mapreduceCmds
+
+##PHASE 2 OUTPUT IS STORED IN HDFS IN /output2
+hadoop fs -get /output2 /home/maureen_maguire47
+hadoop fs -cat /output2/part* > mapTwoOutput.csv
+head -5 mapTwoOutput.csv
+hadoop fs -put mapTwoOutput.csv /
+hadoop fs -ls /
+
+##RETURN TO MAP REDUCE PHASE 3 COMMANS
+
+##PHASE 3 OUTPUT IS STORED IN HDFS IN /output3
+hadoop fs -get /output3 /home/maureen_maguire47
+hadoop fs -cat /output3/part* > mapThreeOutput.csv
+head -5 mapThreeOutput.csv
+hadoop fs -put mapThreeOutput.csv /
+hadoop fs -ls /
+
+##WE REFORMAT THE FILE SO IT IS READY FOR HIVE
+##REPLACING SPACES WITH COMMAS SO WE CAN LOAD FILE INTO HIVE TABLE.HIVE TABLE WILL HAVE A DELIMITER OF COMMA.
+sed -e 's/\s/,/g' mapThreeOutput.csv > mapThreeOutputClean.csv
+hadoop fs -put mapThreeOutputClean.csv /

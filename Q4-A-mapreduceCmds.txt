@@ -1,0 +1,15 @@
+##Reference is https://github.com/SatishUC15/TFIDF-HadoopMapReduce#tfidf-hadoop
+##INSTEAD OF USING hadoop-streaming-2.7.1.jar AS SATISH DID, I AM USING 2.9.2
+
+##USING THE STREAMING JAR TO EXECUTE THE MAP AND REDUCE JOBS PHASE ONE. THE INPUT FILE IS TOP 10 USER POSTS
+hadoop jar /usr/lib/hadoop-mapreduce/hadoop-streaming-2.9.2.jar -file /home/maureen_maguire47/MapperPhaseOne.py /home/maureen_maguire47/ReducerPhaseOne.py  -mapper "python MapperPhaseOne.py" -reducer "python ReducerPhaseOne.py" -input /assigone/resultsFromHive -output /output1
+
+##BEFORE RUNNING THIS COMMAND I CONVERTED THE OUTPUT OF MAP/REDUCE 1 INTO A CSV FORMAT. THE CODE FOR THIS IS IN THE SOURCE CODE FILE Q4ConverMROutputs
+hadoop jar /usr/lib/hadoop-mapreduce/hadoop-streaming-2.9.2.jar -file /home/maureen_maguire47/MapperPhaseTwo.py /home/maureen_maguire47/ReducerPhaseTwo.py -mapper "python MapperPhaseTwo.py" -reducer "python ReducerPhaseTwo.py" -input /mapOneOutput.csv -output /output2
+
+##BEFORE RUNNING THIS COMMAND I CONVERTED THE OUTPUT OF MAP/REDUCE 2 INTO A CSV FORMAT. THE CODE FOR THIS IS IN THE SOURCE CODE FILE Q4ConverMROutputs
+hadoop jar /usr/lib/hadoop-mapreduce/hadoop-streaming-2.9.2.jar -file /home/maureen_maguire47/MapperPhaseThree.py /home/maureen_maguire47/ReducerPhaseThree.py -mapper "python MapperPhaseThree.py" -reducer "python ReducerPhaseThree.py" -input /mapTwoOutput.csv -output /output3 
+ 
+ 
+ 
+ 
